@@ -13,7 +13,10 @@ public static class DbInitializer
 
         // Applique les migrations EF Core et crée la base si elle n'existe pas.
         // Ne pas utiliser EnsureCreatedAsync avec les migrations.
-        await context.Database.MigrateAsync();
+       if (Environment.GetEnvironmentVariable("USE_ENSURE_CREATED") == "true")
+    await context.Database.EnsureCreatedAsync();
+else
+    await context.Database.MigrateAsync();
 
 
         // Les roles doivent exister avant les utilisateurs.
